@@ -42,7 +42,8 @@ func textChunk(text string) io.Reader {
 	buffer.WriteString("tEXt")
 	buffer.Write(byteData)
 	crc := crc32.NewIEEE()
-	io.WriteString(crc, "tEXt")
+	//io.WriteString(crc, "tEXt")
+	crc.Write(byteData)
 	binary.Write(&buffer, binary.BigEndian, crc.Sum32())
 	return &buffer
 }
