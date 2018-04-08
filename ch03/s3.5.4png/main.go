@@ -38,7 +38,7 @@ func readChunks(file *os.File) []io.Reader {
 func textChunk(text string) io.Reader {
 	byteData := []byte(text)
 	var buffer bytes.Buffer
-	binary.Write(&buffer, binary.BigEndian, int(len(byteData)))
+	binary.Write(&buffer, binary.BigEndian, int32(len(byteData)))
 	buffer.WriteString("tEXt")
 	buffer.Write(byteData)
 	crc := crc32.NewIEEE()
