@@ -20,4 +20,14 @@ func main() {
 			break
 		}
 	}
+	scanner := bufio.NewScanner(strings.NewReader(source))
+	for scanner.Scan() {
+		fmt.Printf("%#v\n", scanner.Text())
+	}
+
+	scanner = bufio.NewScanner(strings.NewReader(source))
+	scanner.Split(bufio.ScanWords)
+	for scanner.Scan() {
+		fmt.Printf("%#v\n", scanner.Text())
+	}
 }
