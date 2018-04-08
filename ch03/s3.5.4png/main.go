@@ -15,6 +15,11 @@ func dumpChunk(chunk io.Reader) {
 	buffer := make([]byte, 4)
 	chunk.Read(buffer)
 	fmt.Printf("chunk '%v' (%d bytes)\n", string(buffer), length)
+	if bytes.Equal(buffer, []byte("tEXt")) {
+		rawText := make([]byte, length)
+		chunk.Read(rawText)
+		fmt.Println(string(rawText))
+	}
 }
 
 func readChunks(file *os.File) []io.Reader {
@@ -48,7 +53,7 @@ func textChunk(text string) io.Reader {
 	return &buffer
 }
 
-func main() {
+func readAndInsertText() {
 	file, err := os.Open("Lenna.png")
 	if err != nil {
 		panic(err)
@@ -68,4 +73,21 @@ func main() {
 	for _, chunk := range chunks[1:] {
 		io.Copy(newFile, chunk)
 	}
+}
+
+func readInserted() {
+	file, err := os.Open("Lenna2.png")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	chunks := readChunks(file)
+	for _, chunk := range chunks {
+		dumpChunk(chunk)
+	}
+}
+
+func main() {
+	readAndInsertText()
+	readInserted()
 }
