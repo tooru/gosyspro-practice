@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"C"
+	"os"
+)
 
 func main() {
 	file, err := os.Create("test.txt")
