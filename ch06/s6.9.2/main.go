@@ -16,13 +16,13 @@ func main() {
 	}
 	var conn net.Conn = nil
 	var err error
-	requests := make(chan *http.Request, len(sendMessages))
+	requests := make([]*http.Request, 0, len(sendMessages))
 
 	conn, err = net.Dial("tcp", "localhost:8888")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Access:")
+	fmt.Printf("Access")
 	defer conn.Close()
 
 	for i := 0; i < len(sendMessages); i++ {
@@ -48,12 +48,11 @@ func main() {
 			panic(err)
 		}
 		fmt.Println("send: ", sendMessages[i])
-		requests <- request
+		requests = append(requests, request)
 	}
-	close(requests)
 
 	reader := bufio.NewReader(conn)
-	for request := range requests {
+	for _, request := range requests {
 		response, err := http.ReadResponse(reader, request)
 		if err != nil {
 			panic(err)
