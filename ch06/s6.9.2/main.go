@@ -14,7 +14,7 @@ func main() {
 		"PROGRAMMING",
 		"PLUS",
 	}
-	var conn net.Conn = nil
+	var conn net.Conn
 	var err error
 	requests := make([]*http.Request, 0, len(sendMessages))
 
