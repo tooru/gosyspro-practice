@@ -14,7 +14,6 @@ func main() {
 		"PROGRAMMING",
 		"PLUS",
 	}
-	current := 0
 	var conn net.Conn = nil
 	var err error
 	requests := make(chan *http.Request, len(sendMessages))
@@ -23,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Access: %d\n", current)
+	fmt.Printf("Access:")
 	defer conn.Close()
 
 	for i := 0; i < len(sendMessages); i++ {
@@ -64,8 +63,5 @@ func main() {
 			panic(err)
 		}
 		fmt.Println(string(dump))
-		if current == len(sendMessages) {
-			break
-		}
 	}
 }
