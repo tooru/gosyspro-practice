@@ -12,6 +12,6 @@ func main() {
 		fmt.Println("sub() is finishied")
 		cancel()
 	}()
-	<- ctx.Done()
+	<-ctx.Done()
 	fmt.Println("all tasks are finished")
 }

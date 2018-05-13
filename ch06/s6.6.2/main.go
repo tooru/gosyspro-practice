@@ -16,7 +16,7 @@ func main() {
 		"PLUS",
 	}
 	current := 0
-	var conn net.Conn = nil
+	var conn net.Conn
 
 	for {
 		var err error

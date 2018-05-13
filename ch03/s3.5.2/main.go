@@ -11,5 +11,5 @@ func main() {
 	var i int32
 
 	binary.Read(bytes.NewReader(data), binary.BigEndian, &i)
-	fmt.Println("data: %d\n", i)
+	fmt.Printf("data: %d\n", i)
 }
