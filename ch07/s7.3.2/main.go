@@ -15,6 +15,9 @@ func main() {
 		panic(err)
 	}
 	listener, err := net.ListenMulticastUDP("udp", nil, address)
+	if err != nil {
+		panic(err)
+	}
 	defer listener.Close()
 
 	buffer := make([]byte, 1500)
