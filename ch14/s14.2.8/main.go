@@ -6,27 +6,27 @@ import (
 	"strings"
 )
 
-func readFile(path string) chan string {
-	promise := make(chan string)
+func readFile(path string) *StringFuture {
+	promise, future := NewStringFuture()
 	go func() {
 		content, err := ioutil.ReadFile(path)
 
 		if err != nil {
 			fmt.Printf("read error %s\n", err.Error())
-			close(promise)
+			promise.Close()
 		} else {
-			promise <- string(content)
+			future <- string(content)
 		}
 	}()
 	return promise
 }
 
-func printFunc(futureSource chan string) chan []string {
+func printFunc(futureSource *StringFuture) chan []string {
 	promise := make(chan []string)
 
 	go func() {
 		var result []string
-		for _, line := range strings.Split(<-futureSource, "\n") {
+		for _, line := range strings.Split(futureSource.Get(), "\n") {
 			if strings.HasPrefix(line, "func ") {
 				result = append(result, line)
 			}
@@ -36,8 +36,17 @@ func printFunc(futureSource chan string) chan []string {
 	return promise
 }
 
+func countLines(futureSource *StringFuture) chan int {
+	promise := make(chan int)
+	go func() {
+		promise <- len(strings.Split(futureSource.Get(), "\n"))
+	}()
+	return promise
+}
+
 func main() {
 	futureSource := readFile("main.go")
 	futureFuncs := printFunc(futureSource)
 	fmt.Println(strings.Join(<-futureFuncs, "\n"))
+	fmt.Println(<-countLines(futureSource))
 }
